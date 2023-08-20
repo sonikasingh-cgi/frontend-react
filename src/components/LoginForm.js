@@ -1,20 +1,7 @@
 import React, { useState } from 'react';
 import config from '../config';
 import AuthCard from '../components/AuthCard';
-import axios from 'axios';
 
-const api = axios.create({
-    baseURL: config.apiUrl,
-    headers: {
-      'x-api-key': config.apiKey // Replace with your API key
-    },
-  });
-
-const apiEndpoints = {
-login: '/auth/login',
-register: '/auth/register',
-// Add more endpoints as needed
-};
 
 const LoginForm = ({ onLogin }) => {
   const [email, setEmail] = useState('');
@@ -34,16 +21,14 @@ const LoginForm = ({ onLogin }) => {
     console.log(email)
     console.log(password)
     // Example mock API response
-    /*const response = await fetch(`${config.apiUrl}/auth/login`, {
+    const response = await fetch(`${config.apiUrl}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type' : 'application/json',
         'x-api-key' : `${config.apiKey}`
       },
-      body: { email, password },
-    });*/
-    const body = { email, password }
-    const response = await api.post(apiEndpoints.login, body);
+      body: JSON.stringify({ 'email':email, 'password':password }),
+    });
 
     const data = await response.json();
 

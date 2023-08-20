@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import config from '../config';
 
 const RegisterForm = () => {
   const [email, setEmail] = useState('');
@@ -22,22 +23,29 @@ const RegisterForm = () => {
 
     // TODO: Send registration request to backend API
 
-    // Example mock API response
-    const response = await fetch('/api/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      // Handle successful registration
-    } else {
-      setError(data.message);
+    try{
+        const response = await fetch(`${config.apiUrl}/register`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-api-key' : `${config.apiKey}`
+            },
+            body: JSON.stringify({ email, password }),
+          });
+          const data = await response.json();
+          if (response.ok) {
+            // Handle successful registration
+          } else {
+            setError(data.message);
+          }
+    } catch(error){
+        console.error(error)
     }
+    // Example mock API response
+    
+
+
+    
   };
 
   return (
