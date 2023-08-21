@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Header = () => {
+const Header = ({ isLoggedIn, onLogout }) => {
   return (
     <header>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -11,12 +11,20 @@ const Header = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/">Home</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/login">Sign In</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/register">Sign Up</Link>
-            </li>
+            {isLoggedIn ? (
+              <li className="nav-item">
+                <button className="nav-link" onClick={onLogout}>Logout</button>
+              </li>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/login">Sign In</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/register">Sign Up</Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </nav>

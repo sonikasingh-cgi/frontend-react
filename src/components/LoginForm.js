@@ -17,11 +17,7 @@ const LoginForm = ({ onLogin }) => {
       return;
     }
 
-    // TODO: Send login request to backend API
-    console.log(email)
-    console.log(password)
-    // Example mock API response
-    const response = await fetch(`${config.apiUrl}/auth/login`, {
+    const response = await fetch(`${config.apiUrl}/auth/signin`, {
       method: 'POST',
       headers: {
         'Content-Type' : 'application/json',
@@ -33,15 +29,13 @@ const LoginForm = ({ onLogin }) => {
     const data = await response.json();
 
     if (response.ok) {
-        console.log('user logged in suucessful');
-      onLogin(data.token); // Assume the user object is returned from the API
+      onLogin(data.username); // Assume the user object is returned from the API
     } else {
       setError(data.message);
     }
   };
 
   return (
-    <AuthCard title="Login">
     <form onSubmit={handleLogin}>
       <h2>Login</h2>
       {error && <div className="alert alert-danger">{error}</div>}
@@ -66,8 +60,6 @@ const LoginForm = ({ onLogin }) => {
       <button type="submit" className="btn btn-primary">Login</button>
       {error && <p className="error-message">{error}</p>}
     </form>
-    </AuthCard>
-
   );
 };
 

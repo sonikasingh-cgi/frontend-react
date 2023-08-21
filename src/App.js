@@ -1,19 +1,28 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { createRoot } from 'react-dom/client';
+import React, { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import { Routes, Route } from 'react-router-dom';
-import { BrowserRouter } from 'react-router-dom';
 
-const root = createRoot(document.getElementById('root'));
 
-root.render(
+//const root = createRoot(document.getElementById('root'));
+const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
+//root.render(
+return(  
   <React.StrictMode>
     <BrowserRouter>
-    <Header/>
+    <Header isLoggedIn={isLoggedIn} onLogout={handleLogout}/>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -22,9 +31,5 @@ root.render(
     </BrowserRouter>
   </React.StrictMode>
 );
-
-export default function App() {
-  return (
-    <div>This is the App component</div>
-  );
 }
+export default App;

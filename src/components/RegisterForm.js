@@ -3,9 +3,12 @@ import config from '../config';
 
 const RegisterForm = () => {
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [registrationSuccess, setRegistrationSuccess] = useState(false); // Added this state
+  var data;
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -24,17 +27,19 @@ const RegisterForm = () => {
     // TODO: Send registration request to backend API
 
     try{
-        const response = await fetch(`${config.apiUrl}/register`, {
+        const response = await fetch(`${config.apiUrl}/auth/register`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               'x-api-key' : `${config.apiKey}`
             },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({username, email, password }),
           });
-          const data = await response.json();
+          data = await response.json();
           if (response.ok) {
             // Handle successful registration
+            setRegistrationSuccess(true);
+
           } else {
             setError(data.message);
           }
@@ -49,10 +54,23 @@ const RegisterForm = () => {
   };
 
   return (
+    <div>
+    {registrationSuccess ? (
+        <div className="alert alert-success">
+          Registration Successful
+        </div>
+      ) : (
     <form onSubmit={handleRegister}>
       <h2>Register</h2>
       {error && <div className="alert alert-danger">{error}</div>}
       <div className="form-group">
+      <label>Username</label>
+        <input
+          type="username"
+          className="form-control"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
         <label>Email</label>
         <input
           type="email"
@@ -81,6 +99,8 @@ const RegisterForm = () => {
       </div>
       <button type="submit" className="btn btn-primary">Register</button>
     </form>
+      )}
+    </div>
   );
 };
 
